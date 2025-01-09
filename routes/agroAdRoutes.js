@@ -6,7 +6,7 @@ const router = express.Router();
 
 // POST: Create a new ad
 router.post('/', isSeller, async (req, res) => {
-  const { ad_title, ad_price, ad_weight, ad_location, ad_delivery, image1_url, image2_url, image3_url } = req.body;
+  const { ad_title, ad_price, ad_weight, ad_location, ad_delivery, image1_url, image2_url, image3_url, category} = req.body;
   const { id } = req.user; // From the authenticated seller
 
   
@@ -14,8 +14,8 @@ router.post('/', isSeller, async (req, res) => {
   try {
     // Insert the new ad into the database
     const result = await pool.query(
-      'INSERT INTO agro_ads (user_id, ad_title, ad_price, ad_weight, ad_location, ad_delivery, image1_url, image2_url, image3_url) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING *',
-      [id, ad_title, ad_price, ad_weight, ad_location, ad_delivery, image1_url, image2_url, image3_url]
+      'INSERT INTO agro_ads (user_id, ad_title, ad_price, ad_weight, ad_location, ad_delivery, image1_url, image2_url, image3_url, category) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9 , $10) RETURNING *',
+      [id, ad_title, ad_price, ad_weight, ad_location, ad_delivery, image1_url, image2_url, image3_url, category]
     );
     res.status(201).json({ ad: result.rows[0] });
   } catch (error) {
